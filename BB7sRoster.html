@@ -11,7 +11,7 @@ body {
 
 	padding: 25px;
     background-color: white;
-	
+
 }
 
 table {
@@ -36,12 +36,19 @@ table, th {
 <div class="container">
   <div class="page-header">
     <h1>Blood Bowl 7s Skaven Roster Calculator</h1>
-
-	Sort by: 
+<!--
+	Sort by:
 	<button onclick="TVbut()">Team Value</button>
 	<button onclick="Gbut()">Gutter Runners</button>
 	<button onclick="Sbut()">Storm Vermin</button>
-
+	Rerolls:
+	<select>
+	<option value="0">0</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+-->
+</select>
   </div>
   <div class="row">
     <div class="col-md-6">
@@ -79,8 +86,8 @@ var teams = {
 
 var teams = new Array();
 
-for (L = 3; L < 13; L++) { 
-    for (T = 0; T < 3; T++) { 
+for (L = 3; L < 13; L++) {
+    for (T = 0; T < 3; T++) {
     		for (G = 0; G < 5; G++) {
         		for ( S = 0; S < 3; S++) {
             		for (O = 0; O < 2; O++) {
@@ -89,18 +96,18 @@ for (L = 3; L < 13; L++) {
                         players = L+T+G+S+O;
                         TV = 50*L + 70*T + 80*G + 90*S + 150*O + 120*R;
                     		if ( players > 6 && positionals <5 && TV < 601 ) {
-                            var teamstemp = {
-																"Team Value":TV,
+                            var teamsTemp = {
+																"Team_Value":TV,
 																"Linemen":L,
 																"Throwers":T,
-																"Gutter Runners":G,
-																"Stormvermin":S,
-																"Rat Ogre":O,
-																"ReRolls":R
+																"Gutter_Runners":G,
+																"Storm_Vermin":S,
+																"Rat_Ogre":O,
+																"Re-Rolls":R
 																}
-                            teams.push(teamstemp);
+                            teams.push(teamsTemp);
                       	}
-                    
+
     								}
     						}
     				}
@@ -114,19 +121,22 @@ for (L = 3; L < 13; L++) {
 
 function json2table(json, classes) {
   var cols = Object.keys(json[0]);
-  
+
   var headerRow = '';
   var bodyRows = '';
-  
+
   classes = classes || '';
 
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  function replaceUnderscores(string) {
+    return string.replace("_", " ");
   }
 
   cols.map(function(col) {
-    headerRow += '<th>' + capitalizeFirstLetter(col) + '</th>';
-  });
+		tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">▲</button>';
+		tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">▼</button>'
+
+    headerRow += '<th>' + replaceUnderscores(col) + '<br>' + tempAscendingButton + ' ' + tempDescendingButton + '</th>';
+	});
 
   json.map(function(row) {
     bodyRows += '<tr>';
@@ -154,7 +164,7 @@ var defaultData = teams;
 document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
 
 /* Live example */
-
+/*
 var dom = {
   data: document.getElementById('data'),
   table: document.getElementById('tableGoesHere'),
@@ -164,20 +174,20 @@ dom.data.value = JSON.stringify(defaultData);
 dom.data.addEventListener('input', function() {
   dom.table.innerHTML = json2table(JSON.parse(dom.data.value), 'table');
 });
-
+*/
 //SORT from https://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
 
 function sort_by(field, reverse, primer){
 
-   var key = primer ? 
-       function(x) {return primer(x[field])} : 
+   var key = primer ?
+       function(x) {return primer(x[field])} :
        function(x) {return x[field]};
 
    reverse = !reverse ? 1 : -1;
 
    return function (a, b) {
        return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-     } 
+     }
 }
 
 /*
@@ -192,41 +202,60 @@ homes.sort(sort_by('city', false, function(a){return a.toUpperCase()}));
 */
 
 //EVENT HANDLERS
+function sortLoad(sortField,isAscending){
+	teams.sort(sort_by(sortField, isAscending, parseInt));
+	defaultData = teams;
+	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
+}
 
+/*
 function TVbut(){
-	teams.sort(sort_by('Team Value', true, parseInt));
+	teams.sort(sort_by('Team_Value', true, parseInt));
 	console.log("clicked TVbut");
-
-defaultData = teams;
-
-document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-
-
+	defaultData = teams;
+	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
 }
 
 function Gbut(){
-	teams.sort(sort_by('Gutter Runners', true, parseInt));
+	teams.sort(sort_by('Gutter_Runners', true, parseInt));
 	console.log("clicked Gbut");
-
-
-defaultData = teams;
-
-document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-
-
+	defaultData = teams;
+	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
 }
 
 function Sbut(){
-	teams.sort(sort_by('Stormvermin', true, parseInt));
+	teams.sort(sort_by('Storm_Vermin', true, parseInt));
 	console.log("clicked Sbut");
-
-
-defaultData = teams;
-
-document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-
+	defaultData = teams;
+	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
 }
 
+function ascendingTeam_Value(){
+console.log("ascendingTeam_Value()");
+}
 
+function descendingTeam_Value(){
+console.log("descendingTeam_Value()");
+}
 
+function ascending2(){
+console.log("ascending2");
+}
+
+function ascending3(){
+console.log("ascending3");
+}
+
+function ascending4(){
+console.log("ascending4");
+}
+
+function ascending5(){
+console.log("ascending5");
+}
+
+function ascending6(){
+console.log("ascending6");
+}
+*/
 </script>
