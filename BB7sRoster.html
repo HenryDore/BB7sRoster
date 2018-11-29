@@ -5,27 +5,24 @@
 <style>
 
 body {
-		font-family: Arial, Helvetica, sans-serif;
-		padding: 25px;
-    background-color: black;
-		color: white;
-
-
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 25px;
+	background-color: black;
+	color: white;
 }
 
 table {
-    border-collapse: collapse;
-		background-color: white;
-		color: black;
-
+	border-collapse: collapse;
+	background-color: white;
+	color: black;
 }
 
 table, th, td {
-    border: 1px solid black;
+	border: 1px solid black;
 }
 
 table, th {
-    text-align: center;
+	text-align: center;
 }
 </style>
 
@@ -95,25 +92,24 @@ for (L = 3; L < 13; L++) {
             		for (O = 0; O < 2; O++) {
                 		for (R = 0; R < 3; R++) {
                     		positionals = T+G+S+O;
-                        players = L+T+G+S+O;
-                        TV = 50*L + 70*T + 80*G + 90*S + 150*O + 120*R;
+                    	    players = L+T+G+S+O;
+          	                TV = 50*L + 70*T + 80*G + 90*S + 150*O + 120*R;
                     		if ( players > 6 && positionals <5 && TV < 601 ) {
-                            var teamsTemp = {
-																"Team_Value":TV,
-																"Linemen":L,
-																"Throwers":T,
-																"Gutter_Runners":G,
-																"Storm_Vermin":S,
-																"Rat_Ogre":O,
-																"Re-Rolls":R
-																}
-                            teams.push(teamsTemp);
-                      	}
-
-    								}
-    						}
-    				}
+                       			var teamsTemp = {
+									"Team_Value":TV,
+									"Linemen":L,
+									"Throwers":T,
+									"Gutter_Runners":G,
+									"Storm_Vermin":S,
+									"Rat_Ogre":O,
+									"Re-Rolls":R
+								}
+                            	teams.push(teamsTemp);
+               		   	}
+    				}	
+    			}
     		}
+    	}
     }
 }
 
@@ -130,7 +126,7 @@ function json2table(json, classes) {
   classes = classes || '';
 
   function replaceUnderscores(string) {
-    return string.replace("_", " ");
+  return string.replace("_", " ");
   }
 
   cols.map(function(col) {
