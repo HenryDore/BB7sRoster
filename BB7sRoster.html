@@ -81,6 +81,30 @@ var teamData = { "races":[
 	{"id":"1721","ownerRuleset":"7","name":"Bretonnian","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"14569","name":"Dolfar Longstride"},{"id":"14615","name":"Zara the Slayer"},{"id":"14884","name":"Griff Oberwald"},{"id":"14893","name":"Mighty Zug"},{"id":"14894","name":"Morg \u2018n\u2019 Thorg"},{"id":"14903","name":"Willow Rosebark"}],"positions":[{"id":"13952","gender":"male","title":"Linemen","quantity":"16","iconLetter":"L","cost":"40000","stats":{"MA":"6","ST":"3","AG":"2","AV":"7"},"portrait":"541010","skills":["Fend"],"normalSkills":["G"],"doubleSkills":["A","S","P"]},{"id":"13953","gender":"male","title":"Yeomen","quantity":"4","iconLetter":"Y","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"541011","skills":["Wrestle"],"normalSkills":["G","S"],"doubleSkills":["A","P"]},{"id":"13954","gender":"neutral","title":"Blitzers","quantity":"4","iconLetter":"B","cost":"110000","stats":{"MA":"7","ST":"3","AG":"3","AV":"8"},"portrait":"541012","skills":["Block","Dauntless","Catch"],"normalSkills":["G","A","P"],"doubleSkills":["S"]}]},
 ]}
 
+var teamInfo = [] ;
+for (x in teamData.races) {
+     teamInfo.push({'name':teamData.races[x].name});
+};
+
+for (i = 0; i < 24; i++) {
+	teamInfo[i].positions = teamData.races[i].positions
+};
+
+for (y in teamInfo) {
+	for (x in teamInfo[y].positions) {
+		delete teamInfo[y].positions[x].gender;
+		delete teamInfo[y].positions[x].id;
+		delete teamInfo[y].positions[x].doubleSkills;
+		delete teamInfo[y].positions[x].iconLetter;
+		delete teamInfo[y].positions[x].normalSkills;
+		delete teamInfo[y].positions[x].portrait;
+		delete teamInfo[y].positions[x].skills;
+		delete teamInfo[y].positions[x].stats;
+	}
+}
+
+
+
 var teams = new Array();
 
 iterateTeams();
@@ -99,30 +123,47 @@ function sortLoad(sortField,isAscending){
 }
 
 function iterateTeams(){
-	var L,T,G,S,O,R;
+	var v1,v2,v3,v4,v5,v6,v7;
+	var n1,n2,n3,n4,n5,n6,n7;
+	
+	n1 = 'Linemen';
+	n2 = "Throwers";
+	n3 = "Gutter_Runners";
+	n4 = "Storm_Vermin";
+	n5 = "Rat_Ogre";
+	n6 = "Team_Value";
+	n7 = '';
+	
 	var positionals;
 	var players;
-	var TV;
+	var tv;
 	
+	v1max = 13;
+	v2max = 3;
+	v3max = 5;
+	v4max = 3;
+	v5max = 2;
+	v6max = 3;
 
-	for (L = 3; L < 13; L++) {
-		for (T = 0; T < 3; T++) {
-				for (G = 0; G < 5; G++) {
-					for ( S = 0; S < 3; S++) {
-						for (O = 0; O < 2; O++) {
-							for (R = 0; R < 3; R++) {
-								positionals = T+G+S+O;
-								players = L+T+G+S+O;
-								TV = 50*L + 70*T + 80*G + 90*S + 150*O + 120*R;
-								if ( players > 6 && positionals <5 && TV < 601 ) {
+	for (v1 = 3; v1 < v1max; v1++) {
+		for (v2 = 0; v2 < v2max; v2++) {
+				for (v3 = 0; v3 < v3max; v3++) {
+					for ( v4 = 0; v4 < v4max; v4++) {
+						for (v5 = 0; v5 < v5max; v5++) {
+							for (v6 = 0; v6 < v6max; v6++) {
+								positionals = v2+v3+v4+v5;
+								players = v1+v2+v3+v4+v5;
+								tv = 50*v1 + 70*v2 + 80*v3 + 90*v4 + 150*v5 + 120*v6;
+								if ( players > 6 && positionals <5 && tv < 601 ) {
 									var teamsTemp = {
-										"Team_Value":TV,
-										"Linemen":L,
-										"Throwers":T,
-										"Gutter_Runners":G,
-										"Storm_Vermin":S,
-										"Rat_Ogre":O,
-										"Re-Rolls":R
+										
+										"Linemen":v1,
+										"Throwers":v2,
+										"Gutter_Runners":v3,
+										"Storm_Vermin":v4,
+										"Rat_Ogre":v5,
+										"Re-Rolls":v6,
+										"Team_Value":tv
 									}
 									teams.push(teamsTemp);
 							}
