@@ -24,6 +24,7 @@ table, th, td {
 table, th {
 	text-align: center;
 }
+
 </style>
 
 </head>
@@ -33,28 +34,17 @@ table, th {
 <center>
 
 <div class="container">
-  <div class="page-header">
-    <h1>Blood Bowl 7s Skaven Roster Calculator</h1>
-<!--
-	Sort by:
-	<button onclick="TVbut()">Team Value</button>
-	<button onclick="Gbut()">Gutter Runners</button>
-	<button onclick="Sbut()">Storm Vermin</button>
-	Rerolls:
-	<select>
-	<option value="0">0</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
--->
-</select>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-    </div><!-- /col -->
-    <div id="tableGoesHere" class="col-md-6">
-     </div><!-- col -->
-  </div><!-- /row -->
+	<div class="page-header">
+		<h1>Blood Bowl 7s Skaven Roster Calculator</h1>
+	</div>
+	Select Team: (NOT IMPLEMENTED)<div id="selectGoesHere"></div>
+	<br>
+	<div class="row">
+		<div class="col-md-6">
+		</div><!-- /col -->
+		<div id="tableGoesHere" class="col-md-6">
+		</div><!-- col -->
+	</div><!-- /row -->
 </div><!-- container -->
 
 </center>
@@ -63,60 +53,88 @@ table, th {
 </html>
 
 <script>
-//MY CODE
 
-var L,T,G,S,O,R;
-var positionals;
-var players;
-var TV;
-var index = 0;
-
-/*
-var teams = {
-"TV":0,
-"L":0,
-"T":0,
-"G":0,
-"S":0,
-"O":0,
-"R":0
-}
-*/
+var teamData = { "races":[
+	{"id":"1","ownerRuleset":"0","name":"Amazon","rerollCost":"40000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2625","gender":"female","title":"Linewoman","quantity":"12","iconLetter":"L","cost":"50000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318580","skills":["Dodge"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2626","gender":"female","title":"Catcher","quantity":"2","iconLetter":"C","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318578","skills":["Dodge","Catch"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2627","gender":"female","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318579","skills":["Dodge","Pass"],"normalSkills":["G","P"],"doubleSkills":[]},{"id":"2628","gender":"female","title":"Blitzer","quantity":"4","iconLetter":"Z","cost":"90000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318577","skills":["Dodge","Block"],"normalSkills":["G","S"],"doubleSkills":[]}]},
+	{"id":"2","ownerRuleset":"0","name":"Chaos","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2629","gender":"male","title":"Chaos Warrior","quantity":"4","iconLetter":"C","cost":"100000","stats":{"MA":"5","ST":"4","AG":"3","AV":"9"},"portrait":"318582","skills":[],"normalSkills":["G","S","Ph"],"doubleSkills":[]},{"id":"2630","gender":"male","title":"Beastman","quantity":"12","iconLetter":"B","cost":"60000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318583","skills":["Horns"],"normalSkills":["G","S","Ph"],"doubleSkills":[]},{"id":"2631","gender":"male","title":"Minotaur","quantity":"1","iconLetter":"M","cost":"110000","stats":{"MA":"5","ST":"5","AG":"2","AV":"8"},"portrait":"318581","skills":["Mighty Blow","Thick Skull","Frenzy","Horns","Throw Team Mate","Always Hungry","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]},{"id":"2632","gender":"male","title":"Ogre","quantity":"1","iconLetter":"O","cost":"120000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":"318581","skills":["Mighty Blow","Thick Skull","Bone Head","Throw Team Mate","Big Guy"],"normalSkills":["S"],"doubleSkills":[]},{"id":"2633","gender":"male","title":"Troll","quantity":"1","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318581","skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"3","ownerRuleset":"0","name":"Chaos Dwarf","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2634","gender":"male","title":"Hobgoblin","quantity":"12","iconLetter":"H","cost":"40000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318587","skills":[],"normalSkills":["G"],"doubleSkills":[]},{"id":"2635","gender":"male","title":"Chaos Dwarf Blocker","quantity":"6","iconLetter":"C","cost":"70000","stats":{"MA":"4","ST":"3","AG":"2","AV":"9"},"portrait":"318586","skills":["Block","Thick Skull","Tackle"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2636","gender":"male","title":"Bull Centaur","quantity":"2","iconLetter":"B","cost":"130000","stats":{"MA":"6","ST":"4","AG":"2","AV":"9"},"portrait":"318585","skills":["Thick Skull","Sprint","Sure Feet"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2961","gender":"male","title":"Minotaur","quantity":"1","iconLetter":"M","cost":"110000","stats":{"MA":"5","ST":"5","AG":"2","AV":"8"},"portrait":"318584","skills":["Mighty Blow","Thick Skull","Frenzy","Horns","Throw Team Mate","Always Hungry","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]},{"id":"2969","gender":"male","title":"Troll","quantity":"1","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318584","skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"4","ownerRuleset":"0","name":"Dark Elf","rerollCost":"50000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2639","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"70000","stats":{"MA":"6","ST":"3","AG":"4","AV":"8"},"portrait":"318599","skills":[],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2640","gender":"male","title":"Thrower","quantity":"2","iconLetter":"T","cost":"90000","stats":{"MA":"6","ST":"3","AG":"4","AV":"8"},"portrait":"318598","skills":["Pass"],"normalSkills":["G","A","P"],"doubleSkills":[]},{"id":"2641","gender":"male","title":"Blitzer","quantity":"4","iconLetter":"Z","cost":"100000","stats":{"MA":"7","ST":"3","AG":"4","AV":"8"},"portrait":"318596","skills":["Block"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2642","gender":"female","title":"Witch Elf","quantity":"2","iconLetter":"W","cost":"110000","stats":{"MA":"7","ST":"3","AG":"4","AV":"7"},"portrait":"318595","skills":["Dodge","Jump Up","Frenzy"],"normalSkills":["G","A"],"doubleSkills":[]}]},
+	{"id":"5","ownerRuleset":"0","name":"Dwarf","rerollCost":"40000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2643","gender":"male","title":"Longbeard","quantity":"12","iconLetter":"L","cost":"70000","stats":{"MA":"4","ST":"3","AG":"2","AV":"9"},"portrait":"318604","skills":["Block","Thick Skull","Tackle"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2644","gender":"male","title":"Runner","quantity":"2","iconLetter":"R","cost":"80000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318603","skills":["Sure Hands","Thick Skull"],"normalSkills":["G","P"],"doubleSkills":[]},{"id":"2645","gender":"male","title":"Blitzer","quantity":"2","iconLetter":"Z","cost":"80000","stats":{"MA":"5","ST":"3","AG":"3","AV":"9"},"portrait":"318602","skills":["Block","Thick Skull"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2646","gender":"male","title":"Troll Slayer","quantity":"2","iconLetter":"T","cost":"90000","stats":{"MA":"5","ST":"3","AG":"2","AV":"8"},"portrait":"318601","skills":["Block","Thick Skull","Dauntless","Frenzy"],"normalSkills":["G","S"],"doubleSkills":[]}]},
+	{"id":"6","ownerRuleset":"0","name":"Goblin","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2648","gender":"male","title":"Goblin","quantity":"16","iconLetter":"G","cost":"40000","stats":{"MA":"6","ST":"2","AG":"3","AV":"7"},"portrait":"318613","skills":["Dodge","Stunty","Right Stuff"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2970","gender":"male","title":"Troll","quantity":"2","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318609","skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"7","ownerRuleset":"0","name":"Halfling","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2651","gender":"male","title":"Halfling","quantity":"16","iconLetter":"H","cost":"30000","stats":{"MA":"5","ST":"2","AG":"3","AV":"6"},"portrait":"318616","skills":["Dodge","Stunty","Right Stuff"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2652","gender":"male","title":"Treeman","quantity":"2","iconLetter":"T","cost":"110000","stats":{"MA":"2","ST":"6","AG":"1","AV":"10"},"portrait":"318615","skills":["Mighty Blow","Thick Skull","Take Root","Throw Team Mate","Big Guy","Stand Firm"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"8","ownerRuleset":"0","name":"High Elf","rerollCost":"50000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2654","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"70000","stats":{"MA":"6","ST":"3","AG":"4","AV":"8"},"portrait":"318620","skills":[],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2655","gender":"male","title":"Phoenix Warrior","quantity":"2","iconLetter":"P","cost":"80000","stats":{"MA":"6","ST":"3","AG":"4","AV":"8"},"portrait":"318619","skills":["Pass"],"normalSkills":["G","A","P"],"doubleSkills":[]},{"id":"2656","gender":"male","title":"Lion Warrior","quantity":"4","iconLetter":"L","cost":"90000","stats":{"MA":"8","ST":"3","AG":"4","AV":"7"},"portrait":"318618","skills":["Catch"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2657","gender":"male","title":"Dragon Warrior","quantity":"2","iconLetter":"D","cost":"100000","stats":{"MA":"7","ST":"3","AG":"4","AV":"8"},"portrait":"318617","skills":["Block"],"normalSkills":["G","A"],"doubleSkills":[]}]},
+	{"id":"9","ownerRuleset":"0","name":"Human","rerollCost":"50000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2658","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"50000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318821","skills":[],"normalSkills":["G"],"doubleSkills":[]},{"id":"2659","gender":"male","title":"Catcher","quantity":"4","iconLetter":"C","cost":"70000","stats":{"MA":"8","ST":"2","AG":"3","AV":"7"},"portrait":"318834","skills":["Catch","Dodge"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2660","gender":"male","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318820","skills":["Pass","Sure Hands"],"normalSkills":["G","P"],"doubleSkills":[]},{"id":"2661","gender":"male","title":"Blitzer","quantity":"4","iconLetter":"Z","cost":"90000","stats":{"MA":"7","ST":"3","AG":"3","AV":"8"},"portrait":"318819","skills":["Block"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2964","gender":"male","title":"Ogre","quantity":"1","iconLetter":"O","cost":"120000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":"318818","skills":["Mighty Blow","Thick Skull","Bone Head","Throw Team Mate","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"10","ownerRuleset":"0","name":"Lizardmen","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2663","gender":"male","title":"Skink","quantity":"12","iconLetter":"S","cost":"60000","stats":{"MA":"8","ST":"2","AG":"3","AV":"7"},"portrait":"318627","skills":["Dodge","Stunty"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2664","gender":"male","title":"Saurus","quantity":"6","iconLetter":"S","cost":"80000","stats":{"MA":"6","ST":"4","AG":"1","AV":"9"},"portrait":"318626","skills":[],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2665","gender":"male","title":"Kroxigor","quantity":"1","iconLetter":"K","cost":"130000","stats":{"MA":"6","ST":"5","AG":"1","AV":"9"},"portrait":"318625","skills":["Mighty Blow","Thick Skull","Prehensile Tail","Bone Head","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"11","ownerRuleset":"0","name":"Norse","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2666","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"50000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318638","skills":["Block"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2667","gender":"male","title":"Catcher","quantity":"2","iconLetter":"C","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318636","skills":["Block","Catch"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2668","gender":"male","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318637","skills":["Block","Pass"],"normalSkills":["G","P"],"doubleSkills":[]},{"id":"2669","gender":"male","title":"Blitzer","quantity":"4","iconLetter":"Z","cost":"90000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318635","skills":["Block","Jump Up","Frenzy"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2962","gender":"male","title":"Minotaur","quantity":"1","iconLetter":"M","cost":"110000","stats":{"MA":"5","ST":"5","AG":"2","AV":"8"},"portrait":"318633","skills":["Mighty Blow","Thick Skull","Frenzy","Horns","Throw Team Mate","Always Hungry","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]},{"id":"2965","gender":"male","title":"Ogre","quantity":"1","iconLetter":"O","cost":"120000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":"318633","skills":["Mighty Blow","Thick Skull","Bone Head","Throw Team Mate","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"12","ownerRuleset":"0","name":"Orc","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2672","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"50000","stats":{"MA":"5","ST":"3","AG":"3","AV":"9"},"portrait":"318826","skills":[],"normalSkills":["G"],"doubleSkills":[]},{"id":"2673","gender":"male","title":"Goblin","quantity":"4","iconLetter":"G","cost":"40000","stats":{"MA":"6","ST":"2","AG":"3","AV":"7"},"portrait":"318827","skills":["Dodge","Stunty","Right Stuff"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2674","gender":"male","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"5","ST":"3","AG":"3","AV":"8"},"portrait":"318825","skills":["Pass","Sure Hands"],"normalSkills":["G","P"],"doubleSkills":[]},{"id":"2675","gender":"male","title":"Black Orc Blocker","quantity":"4","iconLetter":"B","cost":"80000","stats":{"MA":"4","ST":"4","AG":"2","AV":"9"},"portrait":"318823","skills":[],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2676","gender":"male","title":"Blitzer","quantity":"4","iconLetter":"Z","cost":"80000","stats":{"MA":"6","ST":"3","AG":"3","AV":"9"},"portrait":"318824","skills":["Block"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2971","gender":"male","title":"Troll","quantity":"1","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318822","skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"13","ownerRuleset":"0","name":"Skaven","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2679","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"50000","stats":{"MA":"7","ST":"3","AG":"3","AV":"7"},"portrait":"318654","skills":[],"normalSkills":["G","Ph"],"doubleSkills":[]},{"id":"2680","gender":"male","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"7","ST":"3","AG":"3","AV":"7"},"portrait":"318653","skills":["Pass","Sure Hands"],"normalSkills":["G","P","Ph"],"doubleSkills":[]},{"id":"2681","gender":"male","title":"Gutter Runner","quantity":"4","iconLetter":"G","cost":"80000","stats":{"MA":"9","ST":"2","AG":"4","AV":"7"},"portrait":"318652","skills":["Dodge"],"normalSkills":["G","A","Ph"],"doubleSkills":[]},{"id":"2682","gender":"male","title":"Storm Vermin","quantity":"2","iconLetter":"S","cost":"90000","stats":{"MA":"7","ST":"3","AG":"3","AV":"8"},"portrait":"318651","skills":["Block"],"normalSkills":["G","S","Ph"],"doubleSkills":[]},{"id":"2683","gender":"male","title":"Rat Ogre","quantity":"1","iconLetter":"R","cost":"130000","stats":{"MA":"6","ST":"5","AG":"2","AV":"8"},"portrait":"318650","skills":["Mighty Blow","Frenzy","Prehensile Tail","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]}]},
+	{"id":"14","ownerRuleset":"0","name":"Undead","rerollCost":"70000","apothecary":"No","undead":"No","necromancer":"No","raisePosition":"2685","info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2684","gender":"neutral","title":"Skeleton","quantity":"12","iconLetter":"S","cost":"30000","stats":{"MA":"5","ST":"3","AG":"2","AV":"7"},"portrait":"318662","skills":["Regenerate"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2685","gender":"male","title":"Zombie","quantity":"12","iconLetter":"Z","cost":"30000","stats":{"MA":"4","ST":"3","AG":"2","AV":"8"},"portrait":"318663","skills":["Regenerate"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2686","gender":"male","title":"Ghoul","quantity":"4","iconLetter":"G","cost":"70000","stats":{"MA":"7","ST":"3","AG":"3","AV":"7"},"portrait":"318661","skills":["Dodge"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2687","gender":"male","title":"Wight","quantity":"2","iconLetter":"W","cost":"90000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318660","skills":["Block","Regenerate"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2688","gender":"male","title":"Mummy","quantity":"2","iconLetter":"M","cost":"110000","stats":{"MA":"3","ST":"5","AG":"1","AV":"9"},"portrait":"318659","skills":["Mighty Blow","Regenerate"],"normalSkills":["G","S"],"doubleSkills":[]}]},
+	{"id":"15","ownerRuleset":"0","name":"Wood Elf","rerollCost":"50000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2689","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"70000","stats":{"MA":"7","ST":"3","AG":"4","AV":"7"},"portrait":"318675","skills":[],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2690","gender":"male","title":"Catcher","quantity":"4","iconLetter":"C","cost":"90000","stats":{"MA":"9","ST":"2","AG":"4","AV":"7"},"portrait":"318673","skills":["Catch","Dodge"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2691","gender":"male","title":"Thrower","quantity":"2","iconLetter":"T","cost":"90000","stats":{"MA":"7","ST":"3","AG":"4","AV":"7"},"portrait":"318674","skills":["Pass"],"normalSkills":["G","A","P"],"doubleSkills":[]},{"id":"2692","gender":"male","title":"Wardancer","quantity":"2","iconLetter":"W","cost":"120000","stats":{"MA":"8","ST":"3","AG":"4","AV":"7"},"portrait":"318672","skills":["Leap","Block","Dodge"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2975","gender":"male","title":"Treeman","quantity":"1","iconLetter":"T","cost":"110000","stats":{"MA":"2","ST":"6","AG":"1","AV":"10"},"portrait":"318671","skills":["Mighty Blow","Thick Skull","Take Root","Throw Team Mate","Big Guy","Stand Firm"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"16","ownerRuleset":"0","name":"Khemri","rerollCost":"70000","apothecary":"No","undead":"No","necromancer":"No","raisePosition":null,"info":"","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2693","gender":"neutral","title":"Skeleton","quantity":"12","iconLetter":"S","cost":"30000","stats":{"MA":"5","ST":"3","AG":"2","AV":"7"},"portrait":"318624","skills":["Regenerate"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2694","gender":"male","title":"Mummy","quantity":"4","iconLetter":"M","cost":"110000","stats":{"MA":"3","ST":"5","AG":"1","AV":"9"},"portrait":"318621","skills":["Mighty Blow","Regenerate"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2695","gender":"male","title":"Blitz-Ra","quantity":"2","iconLetter":"B","cost":"90000","stats":{"MA":"6","ST":"3","AG":"2","AV":"8"},"portrait":"318622","skills":["Block","Regenerate"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2696","gender":"male","title":"Thro-Ra","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"5","ST":"3","AG":"2","AV":"7"},"portrait":"318623","skills":["Pass","Sure Hands","Regenerate"],"normalSkills":["G","P"],"doubleSkills":[]}]},
+	{"id":"17","ownerRuleset":"0","name":"Necromantic","rerollCost":"70000","apothecary":"No","undead":"No","necromancer":"No","raisePosition":"2980","info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2702","gender":"male","title":"Flesh Golem","quantity":"2","iconLetter":"F","cost":"120000","stats":{"MA":"4","ST":"4","AG":"2","AV":"9"},"portrait":"318629","skills":["Regenerate","Thick Skull","Stand Firm"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2703","gender":"male","title":"Werewolf","quantity":"2","iconLetter":"W","cost":"120000","stats":{"MA":"8","ST":"3","AG":"3","AV":"8"},"portrait":"318628","skills":["Catch","Frenzy","Claw"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2980","gender":"male","title":"Zombie","quantity":"12","iconLetter":"Z","cost":"30000","stats":{"MA":"4","ST":"3","AG":"2","AV":"8"},"portrait":"318632","skills":["Regenerate"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2981","gender":"male","title":"Ghoul","quantity":"2","iconLetter":"G","cost":"70000","stats":{"MA":"7","ST":"3","AG":"3","AV":"7"},"portrait":"318631","skills":["Dodge"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2982","gender":"male","title":"Wight","quantity":"2","iconLetter":"W","cost":"90000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318630","skills":["Block","Regenerate"],"normalSkills":["G"],"doubleSkills":[]}]},
+	{"id":"18","ownerRuleset":"0","name":"Vampire","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"<b>Note:<\/b> The Vampire Lord is the head coach and may only play in the game if the ref is bribed.  This works just like freebooting and the Vampire Lord can never gain any SPPs or additional skills.","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2699","gender":"male","title":"Vampire Lord","quantity":"1","iconLetter":"V","cost":"180000","stats":{"MA":"6","ST":"5","AG":"4","AV":"9"},"portrait":null,"skills":["Block","Dodge","Regenerate","Hypnotic Gaze","Undead"],"normalSkills":["G","A","S"],"doubleSkills":[]},{"id":"2700","gender":"male","title":"Vampire","quantity":"6","iconLetter":"V","cost":"110000","stats":{"MA":"6","ST":"4","AG":"4","AV":"8"},"portrait":"318669","skills":["Regenerate","Off For a Bite","Hypnotic Gaze","Undead"],"normalSkills":["G","A","S"],"doubleSkills":[]},{"id":"2701","gender":"male","title":"Thrall","quantity":"12","iconLetter":"T","cost":"40000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318670","skills":[],"normalSkills":["G"],"doubleSkills":[]}]},
+	{"name":"Nurgle"},
+	{"id":"24","ownerRuleset":"0","name":"Elf","rerollCost":"50000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2707","gender":"male","title":"Lineman","quantity":"12","iconLetter":"L","cost":"60000","stats":{"MA":"6","ST":"3","AG":"4","AV":"7"},"portrait":"318608","skills":[],"normalSkills":["A","G"],"doubleSkills":[]},{"id":"2708","gender":"male","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"6","ST":"3","AG":"4","AV":"7"},"portrait":"318607","skills":["Pass"],"normalSkills":["P","A","G"],"doubleSkills":[]},{"id":"2709","gender":"male","title":"Catcher","quantity":"4","iconLetter":"C","cost":"100000","stats":{"MA":"8","ST":"3","AG":"4","AV":"7"},"portrait":"318606","skills":["Catch","Nerves of Steel"],"normalSkills":["A","G"],"doubleSkills":[]},{"id":"2710","gender":"male","title":"Blitzer","quantity":"2","iconLetter":"Z","cost":"110000","stats":{"MA":"7","ST":"3","AG":"4","AV":"8"},"portrait":"318605","skills":["Block","Side Step"],"normalSkills":["A","G"],"doubleSkills":[]}]},
+	{"id":"30","ownerRuleset":"0","name":"Chaos Pact","rerollCost":"90000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"<b>Allied races:<\/b> Orc, Skaven, Goblin, Chaos and Norse.\r\n\r\nA team may hire either two linemen or one positional player from each allied race.","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2750","gender":"male","title":"Chaos Marauder","quantity":"12","iconLetter":"C","cost":"50000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":null,"skills":["Block"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2751","gender":"male","title":"Chaos Beastman","quantity":"2","iconLetter":"C","cost":"60000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":null,"skills":["Horns"],"normalSkills":["S","Ph","G"],"doubleSkills":[]},{"id":"2963","gender":"male","title":"Minotaur","quantity":"1","iconLetter":"M","cost":"110000","stats":{"MA":"5","ST":"5","AG":"2","AV":"8"},"portrait":null,"skills":["Mighty Blow","Thick Skull","Frenzy","Horns","Throw Team Mate","Always Hungry","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]},{"id":"2966","gender":"male","title":"Ogre","quantity":"1","iconLetter":"O","cost":"120000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":null,"skills":["Mighty Blow","Thick Skull","Bone Head","Throw Team Mate","Big Guy"],"normalSkills":["S"],"doubleSkills":[]},{"id":"2972","gender":"male","title":"Troll","quantity":"1","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":null,"skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"37","ownerRuleset":"0","name":"Goblin","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"Grandfathered Stunty race","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"3064","name":"Odster Evil One"},{"id":"3070","name":"Nezogt the Mutated"},{"id":"3073","name":"Mad Gark the Tamer"},{"id":"3083","name":"Shadow"},{"id":"3086","name":"Slabb"},{"id":"3093","name":"Thundershout Gristlegnasher"},{"id":"3120","name":"Lorebass"}],"positions":[{"id":"2973","gender":"male","title":"Goblin","quantity":"16","iconLetter":"G","cost":"40000","stats":{"MA":"6","ST":"2","AG":"3","AV":"7"},"portrait":"382918","skills":["Stunty","Right Stuff","Dodge"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2983","gender":"male","title":"Troll","quantity":"2","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318609","skills":["Throw Team-Mate","Regeneration","Really Stupid","Mighty Blow","Always Hungry"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"38","ownerRuleset":"0","name":"Halfling","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"Grandfathered Stunty race","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"3063","name":"Leeloo Lion Tamer"},{"id":"3066","name":"Blarney Bill Bastidge"},{"id":"3077","name":"Will-O the Wisp"},{"id":"3083","name":"Shadow"},{"id":"3089","name":"Puck"},{"id":"3090","name":"Big Pudwick"},{"id":"3092","name":"Cusimano the Gentle Giant"},{"id":"3120","name":"Lorebass"}],"positions":[{"id":"2791","gender":"male","title":"Ogre","quantity":"2","iconLetter":"O","cost":"140000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":null,"skills":["Mighty Blow","Thick Skull","Bone-head","Loner","Throw Team-Mate"],"normalSkills":["S"],"doubleSkills":[]},{"id":"2974","gender":"male","title":"Halfling","quantity":"16","iconLetter":"H","cost":"30000","stats":{"MA":"5","ST":"2","AG":"3","AV":"6"},"portrait":"318616","skills":["Dodge","Right Stuff","Stunty"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2984","gender":"male","title":"Treeman","quantity":"2","iconLetter":"T","cost":"110000","stats":{"MA":"2","ST":"6","AG":"1","AV":"10"},"portrait":"318615","skills":["Mighty Blow","Stand Firm","Thick Skull","Loner","Take Root","Throw Team-Mate"],"normalSkills":["S"],"doubleSkills":[]}]},
+	{"id":"1721","ownerRuleset":"7","name":"Bretonnian","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"14569","name":"Dolfar Longstride"},{"id":"14615","name":"Zara the Slayer"},{"id":"14884","name":"Griff Oberwald"},{"id":"14893","name":"Mighty Zug"},{"id":"14894","name":"Morg \u2018n\u2019 Thorg"},{"id":"14903","name":"Willow Rosebark"}],"positions":[{"id":"13952","gender":"male","title":"Linemen","quantity":"16","iconLetter":"L","cost":"40000","stats":{"MA":"6","ST":"3","AG":"2","AV":"7"},"portrait":"541010","skills":["Fend"],"normalSkills":["G"],"doubleSkills":["A","S","P"]},{"id":"13953","gender":"male","title":"Yeomen","quantity":"4","iconLetter":"Y","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"541011","skills":["Wrestle"],"normalSkills":["G","S"],"doubleSkills":["A","P"]},{"id":"13954","gender":"neutral","title":"Blitzers","quantity":"4","iconLetter":"B","cost":"110000","stats":{"MA":"7","ST":"3","AG":"3","AV":"8"},"portrait":"541012","skills":["Block","Dauntless","Catch"],"normalSkills":["G","A","P"],"doubleSkills":["S"]}]},
+]}
 
 var teams = new Array();
 
-for (L = 3; L < 13; L++) {
-    for (T = 0; T < 3; T++) {
-    		for (G = 0; G < 5; G++) {
-        		for ( S = 0; S < 3; S++) {
-            		for (O = 0; O < 2; O++) {
-                		for (R = 0; R < 3; R++) {
-                    		positionals = T+G+S+O;
-                    	    players = L+T+G+S+O;
-          	                TV = 50*L + 70*T + 80*G + 90*S + 150*O + 120*R;
-                    		if ( players > 6 && positionals <5 && TV < 601 ) {
-                       			var teamsTemp = {
-									"Team_Value":TV,
-									"Linemen":L,
-									"Throwers":T,
-									"Gutter_Runners":G,
-									"Storm_Vermin":S,
-									"Rat_Ogre":O,
-									"Re-Rolls":R
-								}
-                            	teams.push(teamsTemp);
-               		   	}
-    				}	
-    			}
-    		}
-    	}
-    }
+iterateTeams();
+var defaultData = teams;
+document.getElementById('tableGoesHere').innerHTML = json2table(teams, 'table');
+document.getElementById('selectGoesHere').innerHTML = json2select();
+
+
+
+
+
+function sortLoad(sortField,isAscending){
+	teams.sort(sort_by(sortField, isAscending, parseInt));
+	defaultData = teams;
+	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
 }
 
+function iterateTeams(){
+	var L,T,G,S,O,R;
+	var positionals;
+	var players;
+	var TV;
+	
 
+	for (L = 3; L < 13; L++) {
+		for (T = 0; T < 3; T++) {
+				for (G = 0; G < 5; G++) {
+					for ( S = 0; S < 3; S++) {
+						for (O = 0; O < 2; O++) {
+							for (R = 0; R < 3; R++) {
+								positionals = T+G+S+O;
+								players = L+T+G+S+O;
+								TV = 50*L + 70*T + 80*G + 90*S + 150*O + 120*R;
+								if ( players > 6 && positionals <5 && TV < 601 ) {
+									var teamsTemp = {
+										"Team_Value":TV,
+										"Linemen":L,
+										"Throwers":T,
+										"Gutter_Runners":G,
+										"Storm_Vermin":S,
+										"Rat_Ogre":O,
+										"Re-Rolls":R
+									}
+									teams.push(teamsTemp);
+							}
+						}	
+					}
+				}
+			}
+		}
+	}
+}
 
 //JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
-
 function json2table(json, classes) {
   var cols = Object.keys(json[0]);
 
@@ -130,8 +148,8 @@ function json2table(json, classes) {
   }
 
   cols.map(function(col) {
-		tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">▲</button>';
-		tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">▼</button>'
+		tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
+		tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>'
 
     headerRow += '<th>' + replaceUnderscores(col) + '<br>' + tempAscendingButton + ' ' + tempDescendingButton + '</th>';
 	});
@@ -155,26 +173,7 @@ function json2table(json, classes) {
          '</tbody></table>';
 }
 
-/* How to use it */
-
-var defaultData = teams;
-
-document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-
-/* Live example */
-/*
-var dom = {
-  data: document.getElementById('data'),
-  table: document.getElementById('tableGoesHere'),
-};
-
-dom.data.value = JSON.stringify(defaultData);
-dom.data.addEventListener('input', function() {
-  dom.table.innerHTML = json2table(JSON.parse(dom.data.value), 'table');
-});
-*/
 //SORT from https://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
-
 function sort_by(field, reverse, primer){
 
    var key = primer ?
@@ -188,6 +187,31 @@ function sort_by(field, reverse, primer){
      }
 }
 
+//TEAM DATA:
+
+//USE THIS TO MAKE A LISTBOX:
+
+function json2select() {
+
+	
+	
+	var teamDataTemp = teamData;
+	var options = '';
+
+	function replaceUnderscores(string) {
+		return string.replace(" ", "_");
+		}
+
+	teamDataTemp.races.forEach(function(element){options += '<option value="' + replaceUnderscores(element.name) + '">' + element.name + '</option>';});
+
+	return '<select>' + options + '</select>';
+}
+
+
+//teamData.races.forEach(function(element){console.log(element.name)});
+//console.log(teamData.races.length);
+
+//MISC LEFTOVERS:
 /*
 Sort examples
 
@@ -200,11 +224,6 @@ homes.sort(sort_by('city', false, function(a){return a.toUpperCase()}));
 */
 
 //EVENT HANDLERS
-function sortLoad(sortField,isAscending){
-	teams.sort(sort_by(sortField, isAscending, parseInt));
-	defaultData = teams;
-	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-}
 
 /*
 function TVbut(){
@@ -227,33 +246,6 @@ function Sbut(){
 	defaultData = teams;
 	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
 }
-
-function ascendingTeam_Value(){
-console.log("ascendingTeam_Value()");
-}
-
-function descendingTeam_Value(){
-console.log("descendingTeam_Value()");
-}
-
-function ascending2(){
-console.log("ascending2");
-}
-
-function ascending3(){
-console.log("ascending3");
-}
-
-function ascending4(){
-console.log("ascending4");
-}
-
-function ascending5(){
-console.log("ascending5");
-}
-
-function ascending6(){
-console.log("ascending6");
-}
 */
+
 </script>
