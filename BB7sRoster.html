@@ -37,12 +37,12 @@ table, th {
 	<div class="page-header">
 		<h1>Blood Bowl 7s Skaven Roster Calculator</h1>
 	</div>
-	Select Team: (NOT IMPLEMENTED)<div id="selectGoesHere"></div>
+	Select Team: (NOT IMPLEMENTED)<div id="selectRace"></div>
 	<br>
 	<div class="row">
 		<div class="col-md-6">
 		</div><!-- /col -->
-		<div id="tableGoesHere" class="col-md-6">
+		<div id="tableCombos" class="col-md-6">
 		</div><!-- col -->
 	</div><!-- /row -->
 </div><!-- container -->
@@ -109,8 +109,8 @@ const teams = new Array();
 
 iterateTeams();
 let defaultData = teams;
-document.getElementById('tableGoesHere').innerHTML = json2table(teams, 'table');
-document.getElementById('selectGoesHere').innerHTML = json2select();
+document.getElementById('tableCombos').innerHTML = json2table(teams, 'table');
+document.getElementById('selectRace').innerHTML = json2select();
 
 
 
