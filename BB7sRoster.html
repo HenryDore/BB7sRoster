@@ -175,9 +175,8 @@ function json2table(json, classes) {
   }
 
   cols.map(function(col) {
-		tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
-		tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>'
-
+		const tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
+		const tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>'
     headerRow += '<th>' + replaceUnderscores(col) + '<br>' + tempAscendingButton + ' ' + tempDescendingButton + '</th>';
 	});
 
