@@ -81,7 +81,8 @@ const teamData = (function() {
 		{"id":"1721","ownerRuleset":"7","name":"Bretonnian","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"14569","name":"Dolfar Longstride"},{"id":"14615","name":"Zara the Slayer"},{"id":"14884","name":"Griff Oberwald"},{"id":"14893","name":"Mighty Zug"},{"id":"14894","name":"Morg \u2018n\u2019 Thorg"},{"id":"14903","name":"Willow Rosebark"}],"positions":[{"id":"13952","gender":"male","title":"Linemen","quantity":"16","iconLetter":"L","cost":"40000","stats":{"MA":"6","ST":"3","AG":"2","AV":"7"},"portrait":"541010","skills":["Fend"],"normalSkills":["G"],"doubleSkills":["A","S","P"]},{"id":"13953","gender":"male","title":"Yeomen","quantity":"4","iconLetter":"Y","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"541011","skills":["Wrestle"],"normalSkills":["G","S"],"doubleSkills":["A","P"]},{"id":"13954","gender":"neutral","title":"Blitzers","quantity":"4","iconLetter":"B","cost":"110000","stats":{"MA":"7","ST":"3","AG":"3","AV":"8"},"portrait":"541012","skills":["Block","Dauntless","Catch"],"normalSkills":["G","A","P"],"doubleSkills":["S"]}]},
 	]}
 
-	return defaultData.races.map(function(race) {
+	const races = new Map();
+	defaultData.races.forEach(function(race) {
 		const positions = [];
 
 		race.positions.forEach(function(positional) {
@@ -98,11 +99,9 @@ const teamData = (function() {
 			'cost': parseInt(race.rerollCost) / 1000 * 2, // doubled reroll cost in Sevens
 		});
 
-		return {
-			'name': race.name,
-			'positions': positions,
-		};
+		races.set(race.name, positions);
 	});
+	return races;
 })()
 
 function sortLoad(sortField,isAscending){
@@ -159,7 +158,7 @@ function iterateTeams(){
 		}
 	}
 
-	return teams
+	return teams;
 }
 
 //JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
@@ -226,7 +225,9 @@ function json2select() {
 		return string.replace(" ", "_");
 		}
 
-	teamData.forEach(function(element){options += '<option value="' + replaceUnderscores(element.name) + '">' + element.name + '</option>';});
+	for ( race of teamData.keys() ) {
+		options += '<option value="' + replaceUnderscores(race) + '">' + race + '</option>';
+	}
 
 	return '<select>' + options + '</select>';
 }
