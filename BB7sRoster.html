@@ -54,7 +54,7 @@ table, th {
 
 <script>
 
-var teamData = { "races":[
+const teamData = { "races":[
 	{"id":"1","ownerRuleset":"0","name":"Amazon","rerollCost":"40000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2625","gender":"female","title":"Linewoman","quantity":"12","iconLetter":"L","cost":"50000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318580","skills":["Dodge"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2626","gender":"female","title":"Catcher","quantity":"2","iconLetter":"C","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318578","skills":["Dodge","Catch"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2627","gender":"female","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318579","skills":["Dodge","Pass"],"normalSkills":["G","P"],"doubleSkills":[]},{"id":"2628","gender":"female","title":"Blitzer","quantity":"4","iconLetter":"Z","cost":"90000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318577","skills":["Dodge","Block"],"normalSkills":["G","S"],"doubleSkills":[]}]},
 	{"id":"2","ownerRuleset":"0","name":"Chaos","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2629","gender":"male","title":"Chaos Warrior","quantity":"4","iconLetter":"C","cost":"100000","stats":{"MA":"5","ST":"4","AG":"3","AV":"9"},"portrait":"318582","skills":[],"normalSkills":["G","S","Ph"],"doubleSkills":[]},{"id":"2630","gender":"male","title":"Beastman","quantity":"12","iconLetter":"B","cost":"60000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318583","skills":["Horns"],"normalSkills":["G","S","Ph"],"doubleSkills":[]},{"id":"2631","gender":"male","title":"Minotaur","quantity":"1","iconLetter":"M","cost":"110000","stats":{"MA":"5","ST":"5","AG":"2","AV":"8"},"portrait":"318581","skills":["Mighty Blow","Thick Skull","Frenzy","Horns","Throw Team Mate","Always Hungry","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]},{"id":"2632","gender":"male","title":"Ogre","quantity":"1","iconLetter":"O","cost":"120000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":"318581","skills":["Mighty Blow","Thick Skull","Bone Head","Throw Team Mate","Big Guy"],"normalSkills":["S"],"doubleSkills":[]},{"id":"2633","gender":"male","title":"Troll","quantity":"1","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318581","skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
 	{"id":"3","ownerRuleset":"0","name":"Chaos Dwarf","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2634","gender":"male","title":"Hobgoblin","quantity":"12","iconLetter":"H","cost":"40000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318587","skills":[],"normalSkills":["G"],"doubleSkills":[]},{"id":"2635","gender":"male","title":"Chaos Dwarf Blocker","quantity":"6","iconLetter":"C","cost":"70000","stats":{"MA":"4","ST":"3","AG":"2","AV":"9"},"portrait":"318586","skills":["Block","Thick Skull","Tackle"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2636","gender":"male","title":"Bull Centaur","quantity":"2","iconLetter":"B","cost":"130000","stats":{"MA":"6","ST":"4","AG":"2","AV":"9"},"portrait":"318585","skills":["Thick Skull","Sprint","Sure Feet"],"normalSkills":["G","S"],"doubleSkills":[]},{"id":"2961","gender":"male","title":"Minotaur","quantity":"1","iconLetter":"M","cost":"110000","stats":{"MA":"5","ST":"5","AG":"2","AV":"8"},"portrait":"318584","skills":["Mighty Blow","Thick Skull","Frenzy","Horns","Throw Team Mate","Always Hungry","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]},{"id":"2969","gender":"male","title":"Troll","quantity":"1","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318584","skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
@@ -81,7 +81,7 @@ var teamData = { "races":[
 	{"id":"1721","ownerRuleset":"7","name":"Bretonnian","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"14569","name":"Dolfar Longstride"},{"id":"14615","name":"Zara the Slayer"},{"id":"14884","name":"Griff Oberwald"},{"id":"14893","name":"Mighty Zug"},{"id":"14894","name":"Morg \u2018n\u2019 Thorg"},{"id":"14903","name":"Willow Rosebark"}],"positions":[{"id":"13952","gender":"male","title":"Linemen","quantity":"16","iconLetter":"L","cost":"40000","stats":{"MA":"6","ST":"3","AG":"2","AV":"7"},"portrait":"541010","skills":["Fend"],"normalSkills":["G"],"doubleSkills":["A","S","P"]},{"id":"13953","gender":"male","title":"Yeomen","quantity":"4","iconLetter":"Y","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"541011","skills":["Wrestle"],"normalSkills":["G","S"],"doubleSkills":["A","P"]},{"id":"13954","gender":"neutral","title":"Blitzers","quantity":"4","iconLetter":"B","cost":"110000","stats":{"MA":"7","ST":"3","AG":"3","AV":"8"},"portrait":"541012","skills":["Block","Dauntless","Catch"],"normalSkills":["G","A","P"],"doubleSkills":["S"]}]},
 ]}
 
-var teamInfo = [] ;
+const teamInfo = [] ;
 for (x in teamData.races) {
      teamInfo.push({'name':teamData.races[x].name});
 };
@@ -105,10 +105,10 @@ for (y in teamInfo) {
 
 
 
-var teams = new Array();
+const teams = new Array();
 
 iterateTeams();
-var defaultData = teams;
+let defaultData = teams;
 document.getElementById('tableGoesHere').innerHTML = json2table(teams, 'table');
 document.getElementById('selectGoesHere').innerHTML = json2select();
 
@@ -123,9 +123,9 @@ function sortLoad(sortField,isAscending){
 }
 
 function iterateTeams(){
-	var v1,v2,v3,v4,v5,v6,v7;
-	var n1,n2,n3,n4,n5,n6,n7;
-	
+	let v1,v2,v3,v4,v5,v6,v7;
+	let n1,n2,n3,n4,n5,n6,n7;
+
 	n1 = 'Linemen';
 	n2 = "Throwers";
 	n3 = "Gutter_Runners";
@@ -133,11 +133,11 @@ function iterateTeams(){
 	n5 = "Rat_Ogre";
 	n6 = "Team_Value";
 	n7 = '';
-	
-	var positionals;
-	var players;
-	var tv;
-	
+
+	let positionals;
+	let players;
+	let tv;
+
 	v1max = 13;
 	v2max = 3;
 	v3max = 5;
@@ -155,8 +155,8 @@ function iterateTeams(){
 								players = v1+v2+v3+v4+v5;
 								tv = 50*v1 + 70*v2 + 80*v3 + 90*v4 + 150*v5 + 120*v6;
 								if ( players > 6 && positionals <5 && tv < 601 ) {
-									var teamsTemp = {
-										
+									const teamsTemp = {
+
 										"Linemen":v1,
 										"Throwers":v2,
 										"Gutter_Runners":v3,
@@ -167,7 +167,7 @@ function iterateTeams(){
 									}
 									teams.push(teamsTemp);
 							}
-						}	
+						}
 					}
 				}
 			}
@@ -177,10 +177,10 @@ function iterateTeams(){
 
 //JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
 function json2table(json, classes) {
-  var cols = Object.keys(json[0]);
+  let cols = Object.keys(json[0]);
 
-  var headerRow = '';
-  var bodyRows = '';
+  let headerRow = '';
+  let bodyRows = '';
 
   classes = classes || '';
 
@@ -217,7 +217,7 @@ function json2table(json, classes) {
 //SORT from https://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
 function sort_by(field, reverse, primer){
 
-   var key = primer ?
+   const key = primer ?
        function(x) {return primer(x[field])} :
        function(x) {return x[field]};
 
@@ -234,10 +234,8 @@ function sort_by(field, reverse, primer){
 
 function json2select() {
 
-	
-	
-	var teamDataTemp = teamData;
-	var options = '';
+	let teamDataTemp = teamData;
+	let options = '';
 
 	function replaceUnderscores(string) {
 		return string.replace(" ", "_");
