@@ -55,7 +55,13 @@ table, th {
 <script>
 const MAX_TV = 600;
 
-const teamData = (function() {
+const store = {
+	'races': new Map(),
+	'teams': new Map(),
+	'table': [],
+}
+
+function loadTeamData() {
 	const defaultData = { "races":[
 		{"id":"1","ownerRuleset":"0","name":"Amazon","rerollCost":"40000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2625","gender":"female","title":"Linewoman","quantity":"12","iconLetter":"L","cost":"50000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318580","skills":["Dodge"],"normalSkills":["G"],"doubleSkills":[]},{"id":"2626","gender":"female","title":"Catcher","quantity":"2","iconLetter":"C","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318578","skills":["Dodge","Catch"],"normalSkills":["G","A"],"doubleSkills":[]},{"id":"2627","gender":"female","title":"Thrower","quantity":"2","iconLetter":"T","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318579","skills":["Dodge","Pass"],"normalSkills":["G","P"],"doubleSkills":[]},{"id":"2628","gender":"female","title":"Blitzer","quantity":"4","iconLetter":"Z","cost":"90000","stats":{"MA":"6","ST":"3","AG":"3","AV":"7"},"portrait":"318577","skills":["Dodge","Block"],"normalSkills":["G","S"],"doubleSkills":[]}]},
 		{"id":"2","ownerRuleset":"0","name":"Chaos","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[],"positions":[{"id":"2629","gender":"male","title":"Chaos Warrior","quantity":"4","iconLetter":"C","cost":"100000","stats":{"MA":"5","ST":"4","AG":"3","AV":"9"},"portrait":"318582","skills":[],"normalSkills":["G","S","Ph"],"doubleSkills":[]},{"id":"2630","gender":"male","title":"Beastman","quantity":"12","iconLetter":"B","cost":"60000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"318583","skills":["Horns"],"normalSkills":["G","S","Ph"],"doubleSkills":[]},{"id":"2631","gender":"male","title":"Minotaur","quantity":"1","iconLetter":"M","cost":"110000","stats":{"MA":"5","ST":"5","AG":"2","AV":"8"},"portrait":"318581","skills":["Mighty Blow","Thick Skull","Frenzy","Horns","Throw Team Mate","Always Hungry","Big Guy","Wild Animal"],"normalSkills":["S","Ph"],"doubleSkills":[]},{"id":"2632","gender":"male","title":"Ogre","quantity":"1","iconLetter":"O","cost":"120000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":"318581","skills":["Mighty Blow","Thick Skull","Bone Head","Throw Team Mate","Big Guy"],"normalSkills":["S"],"doubleSkills":[]},{"id":"2633","gender":"male","title":"Troll","quantity":"1","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318581","skills":["Mighty Blow","Regenerate","Really Stupid","Throw Team Mate","Always Hungry","Big Guy"],"normalSkills":["S"],"doubleSkills":[]}]},
@@ -80,9 +86,8 @@ const teamData = (function() {
 		{"id":"37","ownerRuleset":"0","name":"Goblin","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"Grandfathered Stunty race","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"3064","name":"Odster Evil One"},{"id":"3070","name":"Nezogt the Mutated"},{"id":"3073","name":"Mad Gark the Tamer"},{"id":"3083","name":"Shadow"},{"id":"3086","name":"Slabb"},{"id":"3093","name":"Thundershout Gristlegnasher"},{"id":"3120","name":"Lorebass"}],"positions":[{"id":"2973","gender":"male","title":"Goblin","quantity":"16","iconLetter":"G","cost":"40000","stats":{"MA":"6","ST":"2","AG":"3","AV":"7"},"portrait":"382918","skills":["Stunty","Right Stuff","Dodge"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2983","gender":"male","title":"Troll","quantity":"2","iconLetter":"T","cost":"100000","stats":{"MA":"4","ST":"5","AG":"1","AV":"9"},"portrait":"318609","skills":["Throw Team-Mate","Regeneration","Really Stupid","Mighty Blow","Always Hungry"],"normalSkills":["S"],"doubleSkills":[]}]},
 		{"id":"38","ownerRuleset":"0","name":"Halfling","rerollCost":"60000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":"Grandfathered Stunty race","stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"3063","name":"Leeloo Lion Tamer"},{"id":"3066","name":"Blarney Bill Bastidge"},{"id":"3077","name":"Will-O the Wisp"},{"id":"3083","name":"Shadow"},{"id":"3089","name":"Puck"},{"id":"3090","name":"Big Pudwick"},{"id":"3092","name":"Cusimano the Gentle Giant"},{"id":"3120","name":"Lorebass"}],"positions":[{"id":"2791","gender":"male","title":"Ogre","quantity":"2","iconLetter":"O","cost":"140000","stats":{"MA":"5","ST":"5","AG":"2","AV":"9"},"portrait":null,"skills":["Mighty Blow","Thick Skull","Bone-head","Loner","Throw Team-Mate"],"normalSkills":["S"],"doubleSkills":[]},{"id":"2974","gender":"male","title":"Halfling","quantity":"16","iconLetter":"H","cost":"30000","stats":{"MA":"5","ST":"2","AG":"3","AV":"6"},"portrait":"318616","skills":["Dodge","Right Stuff","Stunty"],"normalSkills":["A"],"doubleSkills":[]},{"id":"2984","gender":"male","title":"Treeman","quantity":"2","iconLetter":"T","cost":"110000","stats":{"MA":"2","ST":"6","AG":"1","AV":"10"},"portrait":"318615","skills":["Mighty Blow","Stand Firm","Thick Skull","Loner","Take Root","Throw Team-Mate"],"normalSkills":["S"],"doubleSkills":[]}]},
 		{"id":"1721","ownerRuleset":"7","name":"Bretonnian","rerollCost":"70000","apothecary":"Yes","undead":"No","necromancer":"No","raisePosition":null,"info":null,"stats":{"physique":"3","finesse":"3","versatility":"3"},"playable":"true","logos":{"192":486374,"128":486373,"96":486372,"64":486371,"48":486369,"32":486370},"stars":[{"id":"14569","name":"Dolfar Longstride"},{"id":"14615","name":"Zara the Slayer"},{"id":"14884","name":"Griff Oberwald"},{"id":"14893","name":"Mighty Zug"},{"id":"14894","name":"Morg \u2018n\u2019 Thorg"},{"id":"14903","name":"Willow Rosebark"}],"positions":[{"id":"13952","gender":"male","title":"Linemen","quantity":"16","iconLetter":"L","cost":"40000","stats":{"MA":"6","ST":"3","AG":"2","AV":"7"},"portrait":"541010","skills":["Fend"],"normalSkills":["G"],"doubleSkills":["A","S","P"]},{"id":"13953","gender":"male","title":"Yeomen","quantity":"4","iconLetter":"Y","cost":"70000","stats":{"MA":"6","ST":"3","AG":"3","AV":"8"},"portrait":"541011","skills":["Wrestle"],"normalSkills":["G","S"],"doubleSkills":["A","P"]},{"id":"13954","gender":"neutral","title":"Blitzers","quantity":"4","iconLetter":"B","cost":"110000","stats":{"MA":"7","ST":"3","AG":"3","AV":"8"},"portrait":"541012","skills":["Block","Dauntless","Catch"],"normalSkills":["G","A","P"],"doubleSkills":["S"]}]},
-	]}
+	]};
 
-	const races = new Map();
 	defaultData.races.forEach(function(race) {
 		const positions = [];
 
@@ -93,34 +98,44 @@ const teamData = (function() {
 				'cost': parseInt(positional.cost) / 1000,
 			});
 		});
-
 		positions.push({
 			'title': 'Reroll',
 			'quantity': 8,
 			'cost': parseInt(race.rerollCost) / 1000 * 2, // doubled reroll cost in Sevens
 		});
 
-		races.set(race.name, positions);
+		store.races.set(race.name, positions);
 	});
-	return races;
-})()
+}
 
 function sortLoad(sortField,isAscending){
-	teams.sort(sort_by(sortField, isAscending, parseInt));
-	const defaultData = teams;
-	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
+	store.table.sort(sort_by(sortField, isAscending, parseInt));
+	document.getElementById('tableCombos').innerHTML = json2table(store.table, 'table');
 }
 
 function init() {
+	loadTeamData();
 	document.getElementById('selectRace').innerHTML = json2select();
-	document.getElementById('tableCombos').innerHTML = json2table(iterateTeams('Skaven'), 'table');
+	selectRace();
+}
+
+function changeRace(race) {
+	if (!store.teams.has(race)) {
+		store.teams.set(race, iterateTeams(race));
+	}
+	store.table = store.teams.get(race);
+	document.getElementById('tableCombos').innerHTML = json2table(store.table, 'table');
+}
+
+function selectRace() {
+	changeRace(replaceUnderscores(document.getElementById('dropdownRace').value));
 }
 
 function iterateTeams(race) {
 	const teams = new Set();
 	const consider = new Array();
 
-	const positions = teamData.get(race);
+	const positions = store.races.get(race);
 	const positionNames = positions.map(pos => pos.title);
 	const initial = positions.map(x => 0); // starting roster = 0 of every pos
 	initial.push(0); // starting TV = 0
@@ -168,6 +183,11 @@ function iterateTeams(race) {
 							});
 }
 
+
+function replaceUnderscores(string) {
+	return string.replace("_", " ");
+}
+
 //JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
 function json2table(json, classes) {
   let cols = Object.keys(json[0]);
@@ -176,10 +196,6 @@ function json2table(json, classes) {
   let bodyRows = '';
 
   classes = classes || '';
-
-  function replaceUnderscores(string) {
-  return string.replace("_", " ");
-  }
 
   cols.map(function(col) {
 		const tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
@@ -231,11 +247,11 @@ function json2select() {
 		return string.replace(" ", "_");
 		}
 
-	for ( race of teamData.keys() ) {
+	for ( race of store.races.keys() ) {
 		options += '<option value="' + replaceUnderscores(race) + '">' + race + '</option>';
 	}
 
-	return '<select>' + options + '</select>';
+	return '<select id="dropdownRace" onchange="selectRace()">' + options + '</select>';
 }
 
 
