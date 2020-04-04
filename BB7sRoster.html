@@ -116,7 +116,7 @@ function sortLoad(sortField,isAscending){
 function init() {
 	loadTeamData();
 	document.getElementById('selectRace').innerHTML = json2select();
-	selectRace();
+	// selectRace();
 }
 
 function changeRace(race) {
@@ -144,9 +144,6 @@ function iterateTeams(race) {
 	while ( consider.length > 0 ) {
 		const candidate = consider.shift();
 
-		// record a possible roster:
-		teams.add(candidate.join(','));
-
 		// determine possible rosters creatable by adding one of any player:
 		positions.map(function({ title, quantity, cost }, p) {
 							 if (candidate[p] >= quantity) {
@@ -163,9 +160,12 @@ function iterateTeams(race) {
 	 							});
 							 }
 						 })
-						 .filter(newCandidate => !teams.has(newCandidate.join(',')))
 						 .filter(newCandidate => newCandidate[newCandidate.length-1] <= MAX_TV)
-						 .forEach(newCandidate => consider.push(newCandidate));
+						 .filter(newCandidate => !teams.has(newCandidate.join(',')))
+						 .forEach(function(newCandidate) {
+							 teams.add(newCandidate.join(','))
+							 consider.push(newCandidate);
+						 });
 	}
 
 	return Array.from(teams)
