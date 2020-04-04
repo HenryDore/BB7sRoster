@@ -168,7 +168,7 @@ function iterateTeams(race) {
 	return Array.from(teams)
 							.map(team => team.split(',').map(x => parseInt(x)))
 							.filter(function(team) {
-								const players = positions.map(function(pos, p) {
+								const players = positionNames.map(function(pos, p) {
 									return (pos === 'Reroll') ? 0 : team[p]
 								}).reduce((a, b) => a + b);
 								return (players <= 16) && (players >= 7);
