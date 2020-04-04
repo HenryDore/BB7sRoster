@@ -147,10 +147,17 @@ function iterateTeams(race) {
 	return Array.from(teams)
 							.map(team => team.split(',').map(x => parseInt(x)))
 							.filter(function(team) {
-								const players = positionNames.map(function(pos, p) {
-									return (pos === 'Reroll') ? 0 : team[p]
-								}).reduce((a, b) => a + b);
-								return (players <= 16) && (players >= 7);
+								let players = 0;
+								let specialists = 0;
+								positions.forEach(function(pos, p) {
+									if ( pos.title !== 'Reroll' ) {
+										players += team[p];
+										if ( pos.quantity < 12 ) {
+											specialists += team[p];
+										}
+									}
+								})
+								return (players <= 11) && (players >= 7) && (specialists <= 4);
 							})
 							.map(function(team) {
 								const teamDesc = {};
