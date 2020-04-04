@@ -148,17 +148,20 @@ function iterateTeams(race) {
 		teams.add(candidate.join(','));
 
 		// determine possible rosters creatable by adding one of any player:
-		positions.filter(({ title, quantity }, p) => candidate[p] < quantity)
-					   .map(function({ title, cost }, p) {
-							 return candidate.map(function(current, c) {
-								 if (c === candidate.length-1 ) {
-									 return current + cost;
-								 } else if (c === p) {
-									 return current + 1;
-								 } else {
-									 return current;
-								 }
-							 });
+		positions.map(function({ title, quantity, cost }, p) {
+							 if (candidate[p] >= quantity) {
+								 return candidate;
+							 } else {
+								 return candidate.map(function(current, c) {
+	 								if (c === candidate.length-1 ) {
+	 									return current + cost;
+	 								} else if (c === p) {
+	 									return current + 1;
+	 								} else {
+	 									return current;
+	 								}
+	 							});
+							 }
 						 })
 						 .filter(newCandidate => !teams.has(newCandidate.join(',')))
 						 .filter(newCandidate => newCandidate[newCandidate.length-1] <= MAX_TV)
