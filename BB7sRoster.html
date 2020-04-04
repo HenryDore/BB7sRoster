@@ -53,6 +53,7 @@ table, th {
 </html>
 
 <script>
+const MAX_TV = 600;
 
 const teamData = (function() {
 	const defaultData = { "races":[
@@ -112,53 +113,59 @@ function sortLoad(sortField,isAscending){
 
 function init() {
 	document.getElementById('selectRace').innerHTML = json2select();
-	document.getElementById('tableCombos').innerHTML = json2table(iterateTeams(), 'table');
+	document.getElementById('tableCombos').innerHTML = json2table(iterateTeams('Skaven'), 'table');
 }
 
-function iterateTeams(){
-	const teams = new Array();
-	let v1,v2,v3,v4,v5,v6,v7;
-	let positionals;
-	let players;
-	let tv;
+function iterateTeams(race) {
+	const teams = new Set();
+	const consider = new Array();
 
-	v1max = 13;
-	v2max = 3;
-	v3max = 5;
-	v4max = 3;
-	v5max = 2;
-	v6max = 3;
+	const positions = teamData.get(race);
+	const positionNames = positions.map(pos => pos.title);
+	const initial = positions.map(x => 0); // starting roster = 0 of every pos
+	initial.push(0); // starting TV = 0
+	consider.push(initial);
 
-	for (v1 = 3; v1 < v1max; v1++) {
-		for (v2 = 0; v2 < v2max; v2++) {
-				for (v3 = 0; v3 < v3max; v3++) {
-					for ( v4 = 0; v4 < v4max; v4++) {
-						for (v5 = 0; v5 < v5max; v5++) {
-							for (v6 = 0; v6 < v6max; v6++) {
-								positionals = v2+v3+v4+v5;
-								players = v1+v2+v3+v4+v5;
-								tv = 50*v1 + 70*v2 + 80*v3 + 90*v4 + 150*v5 + 120*v6;
-								if ( players > 6 && positionals <5 && tv < 601 ) {
-									const teamsTemp = {
+	while ( consider.length > 0 ) {
+		const candidate = consider.shift();
 
-										"Linemen":v1,
-										"Throwers":v2,
-										"Gutter_Runners":v3,
-										"Storm_Vermin":v4,
-										"Rat_Ogre":v5,
-										"Re-Rolls":v6,
-										"Team_Value":tv
-									}
-									teams.push(teamsTemp);
-							}
-						}
-					}
-				}
-			}
-		}
+		// record a possible roster:
+		teams.add(candidate.join(','));
+
+		// determine possible rosters creatable by adding one of any player:
+		positions.filter(({ title, quantity }, p) => candidate[p] < quantity)
+					   .map(function({ title, cost }, p) {
+							 return candidate.map(function(current, c) {
+								 if (c === candidate.length-1 ) {
+									 return current + cost;
+								 } else if (c === p) {
+									 return current + 1;
+								 } else {
+									 return current;
+								 }
+							 });
+						 })
+						 .filter(newCandidate => !teams.has(newCandidate.join(',')))
+						 .filter(newCandidate => newCandidate[newCandidate.length-1] <= MAX_TV)
+						 .forEach(newCandidate => consider.push(newCandidate));
 	}
 
-	return teams;
+	return Array.from(teams)
+							.map(team => team.split(',').map(x => parseInt(x)))
+							.filter(function(team) {
+								const players = positions.map(function(pos, p) {
+									return (pos === 'Reroll') ? 0 : team[p]
+								}).reduce((a, b) => a + b);
+								return (players <= 16) && (players >= 7);
+							})
+							.map(function(team) {
+								const teamDesc = {};
+								positionNames.forEach(function(pos, p) {
+									teamDesc[pos] = team[p];
+								})
+								teamDesc.TV = team[team.length-1];
+								return teamDesc;
+							});
 }
 
 //JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
