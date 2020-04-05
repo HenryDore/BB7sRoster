@@ -197,40 +197,6 @@ function drawTable() {
 		'</tbody></table'
 	].join('');
 }
-//
-// //JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
-// function json2table(json, classes) {
-//   let cols = Object.keys(json[0]);
-//
-//   let headerRow = '';
-//   let bodyRows = '';
-//
-//   classes = classes || '';
-//
-//   cols.map(function(col) {
-// 		const tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
-// 		const tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>'
-//     headerRow += '<th>' + replaceUnderscores(col) + '<br>' + tempAscendingButton + ' ' + tempDescendingButton + '</th>';
-// 	});
-//
-//   json.map(function(row) {
-//     bodyRows += '<tr>';
-//
-//     cols.map(function(colName) {
-//       bodyRows += '<td>' + row[colName] + '</td>';
-//     })
-//
-//     bodyRows += '</tr>';
-//   });
-//
-//   return '<table class="' +
-//          classes +
-//          '"><thead><tr>' +
-//          headerRow +
-//          '</tr></thead><tbody>' +
-//          bodyRows +
-//          '</tbody></table>';
-// }
 
 //SORT from https://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
 function sort_by(field, reverse, primer){
@@ -265,47 +231,9 @@ function json2select() {
 }
 
 
-//teamData.races.forEach(function(element){console.log(element.name)});
-//console.log(teamData.races.length);
-
-//MISC LEFTOVERS:
-/*
-Sort examples
-
-// Sort by price high to low
-homes.sort(sort_by('price', true, parseInt));
-
-// Sort by city, case-insensitive, A-Z
-homes.sort(sort_by('city', false, function(a){return a.toUpperCase()}));
-
-*/
 
 //EVENT HANDLERS
 
 document.addEventListener('DOMContentLoaded', init);
-
-/*
-
-function TVbut(){
-	teams.sort(sort_by('Team_Value', true, parseInt));
-	console.log("clicked TVbut");
-	defaultData = teams;
-	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-}
-
-function Gbut(){
-	teams.sort(sort_by('Gutter_Runners', true, parseInt));
-	console.log("clicked Gbut");
-	defaultData = teams;
-	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-}
-
-function Sbut(){
-	teams.sort(sort_by('Storm_Vermin', true, parseInt));
-	console.log("clicked Sbut");
-	defaultData = teams;
-	document.getElementById('tableGoesHere').innerHTML = json2table(defaultData, 'table');
-}
-*/
 
 </script>
