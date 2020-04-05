@@ -84,8 +84,11 @@ function loadTeamData() {
 	});
 }
 
-function sortLoad(sortField,isAscending){
-	store.table.sort(sort_by(sortField, isAscending, parseInt));
+function sortTable(field, isAscending){
+	const reverse = isAscending ? -1 : 1
+	store.table.sort(function(a, b) {
+		return reverse * ((a[field] > b[field]) - (b[field] > a[field]));
+	})
 	drawTable();
 }
 
@@ -178,8 +181,8 @@ function drawTable() {
 	let cols = Object.keys(store.table[0]);
 
 	const headerRow = cols.map(function(col) {
-		const buttonSortA = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
-		const buttonSortD = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>';
+		const buttonSortA = '<button onclick="sortTable(\'' + col + '\',false)">&#x25B2;</button>';
+		const buttonSortD = '<button onclick="sortTable(\'' + col + '\',true)">&#x25BC;</button>';
 		return '<th>' + replaceUnderscores(col) + '<br>' + buttonSortA + ' ' + buttonSortD + '</th>';
 	}).join('');
 
@@ -198,22 +201,6 @@ function drawTable() {
 	].join('');
 }
 
-//SORT from https://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
-function sort_by(field, reverse, primer){
-
-   const key = primer ?
-       function(x) {return primer(x[field])} :
-       function(x) {return x[field]};
-
-   reverse = !reverse ? 1 : -1;
-
-   return function (a, b) {
-       return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-     }
-}
-
-//TEAM DATA:
-
 //USE THIS TO MAKE A LISTBOX:
 
 function json2select() {
@@ -229,8 +216,6 @@ function json2select() {
 
 	return '<select id="dropdownRace" onchange="selectRace()">' + options + '</select>';
 }
-
-
 
 //EVENT HANDLERS
 
