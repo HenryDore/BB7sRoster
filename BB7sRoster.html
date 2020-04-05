@@ -25,6 +25,11 @@ table, th {
 	text-align: center;
 }
 
+input {
+	width: 40px;
+	text-align: center;
+}
+
 </style>
 
 </head>
@@ -59,6 +64,7 @@ const store = {
 	'races': new Map(),
 	'teams': new Map(),
 	'table': [],
+	'filters': [],
 }
 
 function loadTeamData() {
@@ -103,6 +109,7 @@ function changeRace(race) {
 		store.teams.set(race, iterateTeams(race));
 	}
 	store.table = store.teams.get(race);
+	store.filters = Object.keys(store.table[0]).map(x => '');
 	drawTable();
 }
 
@@ -182,15 +189,30 @@ function spacesToUnderscores(string) {
 }
 
 function drawTable() {
-	let cols = Object.keys(store.table[0]);
+	const cols = Object.keys(store.table[0]);
 
-	const headerRow = cols.map(function(col) {
-		const buttonSortA = '<button onclick="sortTable(\'' + col + '\',false)">&#x25B2;</button>';
-		const buttonSortD = '<button onclick="sortTable(\'' + col + '\',true)">&#x25BC;</button>';
-		return '<th>' + col + '<br>' + buttonSortA + ' ' + buttonSortD + '</th>';
+	const headerRow = cols.map(function(col, c) {
+		return [
+			'<th>',
+			col,
+			'<br>',
+			'<button onclick="sortTable(\'' + col + '\',false)">&#x25B2;</button>',
+			' ',
+			'<button onclick="sortTable(\'' + col + '\',true)">&#x25BC;</button>',
+			'<br>',
+			'<input id="filter' + c + '" onkeyup="updateFilters(' + c + ')" value="' + store.filters[c] + '"></input>',
+			'<button onclick="clearFilter(' + c + ')">x</button>',
+			'</th>'
+		].join('');
 	}).join('');
 
-	const bodyRows = store.table.map(function(team) {
+	const rows = store.table.filter(function(team) {
+		return store.filters.every(function(filtervalue, col) {
+			return filtervalue === '' || team[cols[col]] === filtervalue;
+		});
+	})
+
+	const bodyRows = rows.map(function(team) {
 		return '<tr>' + cols.map(function(col) {
 			return '<td>' + team[col] + '</td>';
 		}).join('') + '</tr>';
@@ -213,6 +235,23 @@ function drawRaceDropdown() {
 		}).join(''),
 		'</select>'
 	].join('');
+}
+
+function clearFilter(col) {
+	document.getElementById('filter' + col).value = '';
+	updateFilters();
+}
+
+function updateFilters(c) {
+	c = c||0;
+	const cols = Object.keys(store.table[0]);
+	store.filters = cols.map(function(colname, col) {
+		return parseInt(document.getElementById('filter' + col).value)||'';
+	});
+	drawTable();
+	const focus = document.getElementById('filter' + c);
+	focus.focus();
+	focus.selectionStart = focus.selectionEnd = focus.value.length;
 }
 
 //EVENT HANDLERS
