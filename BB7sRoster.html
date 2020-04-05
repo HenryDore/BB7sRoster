@@ -94,7 +94,7 @@ function sortTable(field, isAscending){
 
 function init() {
 	loadTeamData();
-	document.getElementById('selectRace').innerHTML = json2select();
+	drawRaceDropdown();
 	selectRace();
 }
 
@@ -107,7 +107,7 @@ function changeRace(race) {
 }
 
 function selectRace() {
-	changeRace(replaceUnderscores(document.getElementById('dropdownRace').value));
+	changeRace(underscoresToSpaces(document.getElementById('dropdownRace').value));
 }
 
 function iterateTeams(race) {
@@ -173,8 +173,12 @@ function iterateTeams(race) {
 }
 
 
-function replaceUnderscores(string) {
+function underscoresToSpaces(string) {
 	return string.replace("_", " ");
+}
+
+function spacesToUnderscores(string) {
+	return string.replace(" ", "_");
 }
 
 function drawTable() {
@@ -183,7 +187,7 @@ function drawTable() {
 	const headerRow = cols.map(function(col) {
 		const buttonSortA = '<button onclick="sortTable(\'' + col + '\',false)">&#x25B2;</button>';
 		const buttonSortD = '<button onclick="sortTable(\'' + col + '\',true)">&#x25BC;</button>';
-		return '<th>' + replaceUnderscores(col) + '<br>' + buttonSortA + ' ' + buttonSortD + '</th>';
+		return '<th>' + col + '<br>' + buttonSortA + ' ' + buttonSortD + '</th>';
 	}).join('');
 
 	const bodyRows = store.table.map(function(team) {
@@ -201,20 +205,14 @@ function drawTable() {
 	].join('');
 }
 
-//USE THIS TO MAKE A LISTBOX:
-
-function json2select() {
-	let options = '';
-
-	function replaceUnderscores(string) {
-		return string.replace(" ", "_");
-		}
-
-	for ( race of store.races.keys() ) {
-		options += '<option value="' + replaceUnderscores(race) + '">' + race + '</option>';
-	}
-
-	return '<select id="dropdownRace" onchange="selectRace()">' + options + '</select>';
+function drawRaceDropdown() {
+	document.getElementById('selectRace').innerHTML = [
+		'<select id="dropdownRace" onchange="selectRace()">',
+		Array.from(store.races.keys()).map(function(race) {
+			return '<option value="' + spacesToUnderscores(race) + '">' + race + '</option>';
+		}).join(''),
+		'</select>'
+	].join('');
 }
 
 //EVENT HANDLERS
