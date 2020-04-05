@@ -86,7 +86,7 @@ function loadTeamData() {
 
 function sortLoad(sortField,isAscending){
 	store.table.sort(sort_by(sortField, isAscending, parseInt));
-	document.getElementById('tableCombos').innerHTML = json2table(store.table, 'table');
+	drawTable();
 }
 
 function init() {
@@ -100,7 +100,7 @@ function changeRace(race) {
 		store.teams.set(race, iterateTeams(race));
 	}
 	store.table = store.teams.get(race);
-	document.getElementById('tableCombos').innerHTML = json2table(store.table, 'table');
+	drawTable();
 }
 
 function selectRace() {
@@ -174,39 +174,63 @@ function replaceUnderscores(string) {
 	return string.replace("_", " ");
 }
 
-//JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
-function json2table(json, classes) {
-  let cols = Object.keys(json[0]);
+function drawTable() {
+	let cols = Object.keys(store.table[0]);
 
-  let headerRow = '';
-  let bodyRows = '';
+	const headerRow = cols.map(function(col) {
+		const buttonSortA = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
+		const buttonSortD = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>';
+		return '<th>' + replaceUnderscores(col) + '<br>' + buttonSortA + ' ' + buttonSortD + '</th>';
+	}).join('');
 
-  classes = classes || '';
+	const bodyRows = store.table.map(function(team) {
+		return '<tr>' + cols.map(function(col) {
+			return '<td>' + team[col] + '</td>';
+		}).join('') + '</tr>';
+	}).join('');
 
-  cols.map(function(col) {
-		const tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
-		const tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>'
-    headerRow += '<th>' + replaceUnderscores(col) + '<br>' + tempAscendingButton + ' ' + tempDescendingButton + '</th>';
-	});
-
-  json.map(function(row) {
-    bodyRows += '<tr>';
-
-    cols.map(function(colName) {
-      bodyRows += '<td>' + row[colName] + '</td>';
-    })
-
-    bodyRows += '</tr>';
-  });
-
-  return '<table class="' +
-         classes +
-         '"><thead><tr>' +
-         headerRow +
-         '</tr></thead><tbody>' +
-         bodyRows +
-         '</tbody></table>';
+	document.getElementById('tableCombos').innerHTML = [
+		'<table class="table"><thead>',
+		headerRow,
+		'</thead><tbody>',
+		bodyRows,
+		'</tbody></table'
+	].join('');
 }
+//
+// //JSON TO TABLE from https://travishorn.com/building-json2table-turn-json-into-an-html-table-a57cf642b84a
+// function json2table(json, classes) {
+//   let cols = Object.keys(json[0]);
+//
+//   let headerRow = '';
+//   let bodyRows = '';
+//
+//   classes = classes || '';
+//
+//   cols.map(function(col) {
+// 		const tempAscendingButton = '<button onclick="sortLoad(\'' + col + '\',false)">&#x25B2;</button>';
+// 		const tempDescendingButton = '<button onclick="sortLoad(\'' + col + '\',true)">&#x25BC;</button>'
+//     headerRow += '<th>' + replaceUnderscores(col) + '<br>' + tempAscendingButton + ' ' + tempDescendingButton + '</th>';
+// 	});
+//
+//   json.map(function(row) {
+//     bodyRows += '<tr>';
+//
+//     cols.map(function(colName) {
+//       bodyRows += '<td>' + row[colName] + '</td>';
+//     })
+//
+//     bodyRows += '</tr>';
+//   });
+//
+//   return '<table class="' +
+//          classes +
+//          '"><thead><tr>' +
+//          headerRow +
+//          '</tr></thead><tbody>' +
+//          bodyRows +
+//          '</tbody></table>';
+// }
 
 //SORT from https://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
 function sort_by(field, reverse, primer){
